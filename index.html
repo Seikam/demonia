@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Affichage du Ticket</title>
     <style>
         body {
@@ -25,21 +26,13 @@
             margin: 20px auto;
         }
         .message {
-            display: flex;
-            align-items: center;
             margin-bottom: 20px;
         }
         .author {
             font-weight: bold;
         }
-        .avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
         .content {
-            display: inline-block;
+            margin-top: 5px;
         }
 
         /* Responsive Styles */
@@ -50,46 +43,33 @@
             .ticket {
                 padding: 15px;
             }
-            .avatar {
-                width: 40px;
-                height: 40px;
-            }
-            .message {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .content {
-                display: block;
-                margin-top: 10px;
-            }
         }
     </style>
 </head>
 <body>
     <h1>Ticket</h1>
     <div id="ticket-content"></div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const params = new URLSearchParams(window.location.search);
             const ticketId = params.get('id');
             
             if (ticketId) {
-                // Modifié pour utiliser l'URL GitHub raw
-                const fileUrl = `http://91.173.15.54:3002/index.html?id=${ticketChannel.id}`;
-                fetch(`${baseUrl}${ticketId}.json`)
+                fetch(`transcripts/${ticketId}.json`)
                     .then(response => response.json())
                     .then(data => {
                         const ticketContent = document.getElementById("ticket-content");
-                        ticketContent.innerHTML = data.messages.reverse().map(msg => `
-                            <div class="ticket">
-                                <div class="message">
-                                    <div class="content">
+                        ticketContent.innerHTML = data.messages.reverse().map(msg => {
+                            return `
+                                <div class="ticket">
+                                    <div class="message">
                                         <span class="author">${msg.author}</span>
-                                        <p>${msg.content}</p>
+                                        <p class="content">${msg.content}</p>
                                     </div>
                                 </div>
-                            </div>
-                        `).join('');
+                            `;
+                        }).join('');
                     })
                     .catch(error => {
                         document.getElementById("ticket-content").innerText = "Erreur lors du chargement des données : " + error;
