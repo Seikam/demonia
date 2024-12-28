@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Affichage du Ticket</title>
     <style>
         body {
@@ -74,21 +75,19 @@
             const ticketId = params.get('id');
             
             if (ticketId) {
-                // Modifié pour utiliser l'URL GitHub raw
-                const fileUrl = `http://MON_IP_LOCAL/index.html?id=${ticketChannel.id}`;
-                fetch(${baseUrl}${ticketId}.json)
+                fetch(`http://91.173.15.54:3002/index.html?id=${ticketChannel.id}`)
                     .then(response => response.json())
                     .then(data => {
                         const ticketContent = document.getElementById("ticket-content");
                         ticketContent.innerHTML = data.messages.reverse().map(msg => 
-                            <div class="ticket">
+                            `<div class="ticket">
                                 <div class="message">
                                     <div class="content">
                                         <span class="author">${msg.author}</span>
                                         <p>${msg.content}</p>
                                     </div>
                                 </div>
-                            </div>
+                            </div>`
                         ).join('');
                     })
                     .catch(error => {
