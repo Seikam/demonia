@@ -75,7 +75,7 @@
             const ticketId = params.get('id');
             
             if (ticketId) {
-                const url = `http://91.173.15.54:3002/transcripts/${ticketId}.json`;
+                const url = `https://raw.githubusercontent.com/Seikam/demonia/main/transcript/${ticketId}.json`;
                 console.log('Fetching URL:', url);
                 
                 fetch(url)
