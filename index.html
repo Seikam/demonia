@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Affichage du Ticket</title>
     <style>
         body {
@@ -26,15 +25,21 @@
             margin: 20px auto;
         }
         .message {
-            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
         }
         .author {
             font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
+        }
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
         }
         .content {
-            margin-left: 10px;
+            display: inline-block;
         }
 
         /* Responsive Styles */
@@ -45,48 +50,49 @@
             .ticket {
                 padding: 15px;
             }
+            .avatar {
+                width: 40px;
+                height: 40px;
+            }
+            .message {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .content {
+                display: block;
+                margin-top: 10px;
+            }
         }
     </style>
 </head>
 <body>
     <h1>Ticket</h1>
-    <div id="ticket-content">Chargement en cours...</div>
+    <div id="ticket-content"></div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const params = new URLSearchParams(window.location.search);
-            const ticketId = params.get('id'); // Récupérer l'ID du ticket dans l'URL
-
+            const ticketId = params.get('id');
+            
             if (ticketId) {
-                // Chargement du fichier JSON contenant les messages du ticket
-                fetch(`transcripts/${ticketId}.json`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error("Erreur lors du chargement du fichier JSON");
-                        }
-                        return response.json();
-                    })
+                // Modifié pour utiliser l'URL GitHub raw
+                const fileUrl = `http://MON_IP_LOCAL/index.html?id=${ticketChannel.id}`;
+                fetch(${baseUrl}${ticketId}.json)
+                    .then(response => response.json())
                     .then(data => {
                         const ticketContent = document.getElementById("ticket-content");
-
-                        if (data.messages && data.messages.length > 0) {
-                            // Afficher chaque message
-                            ticketContent.innerHTML = data.messages.reverse().map(msg => {
-                                return `
-                                    <div class="ticket">
-                                        <div class="message">
-                                            <span class="author">${msg.author}</span>
-                                            <p class="content">${msg.content}</p>
-                                        </div>
+                        ticketContent.innerHTML = data.messages.reverse().map(msg => 
+                            <div class="ticket">
+                                <div class="message">
+                                    <div class="content">
+                                        <span class="author">${msg.author}</span>
+                                        <p>${msg.content}</p>
                                     </div>
-                                `;
-                            }).join('');
-                        } else {
-                            ticketContent.innerHTML = "Aucun message trouvé pour ce ticket.";
-                        }
+                                </div>
+                            </div>
+                        ).join('');
                     })
                     .catch(error => {
-                        const ticketContent = document.getElementById("ticket-content");
-                        ticketContent.innerText = "Erreur lors du chargement des données : " + error.message;
+                        document.getElementById("ticket-content").innerText = "Erreur lors du chargement des données : " + error;
                     });
             } else {
                 document.getElementById("ticket-content").innerText = "Aucun ticket spécifié.";
