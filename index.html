@@ -70,43 +70,43 @@
     <h1>Ticket</h1>
     <div id="ticket-content"></div>
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const params = new URLSearchParams(window.location.search);
-        const ticketId = params.get('id');
-        
-        if (ticketId) {
-            const url = `http://91.173.15.54:3002/transcripts/${ticketId}.json`; // URL corrigée
-            console.log('Fetching URL:', url);
+        document.addEventListener("DOMContentLoaded", function() {
+            const params = new URLSearchParams(window.location.search);
+            const ticketId = params.get('id');
             
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Data received:', data);
-                    const ticketContent = document.getElementById("ticket-content");
-                    ticketContent.innerHTML = data.messages.reverse().map(msg => 
-                        `<div class="ticket">
-                            <div class="message">
-                                <div class="content">
-                                    <span class="author">${msg.author}</span>
-                                    <p>${msg.content}</p>
+            if (ticketId) {
+                const url = `http://91.173.15.54:3002/transcripts/${ticketId}.json`;
+                console.log('Fetching URL:', url);
+                
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Data received:', data);
+                        const ticketContent = document.getElementById("ticket-content");
+                        ticketContent.innerHTML = data.messages.reverse().map(msg => 
+                            `<div class="ticket">
+                                <div class="message">
+                                    <div class="content">
+                                        <span class="author">${msg.author}</span>
+                                        <p>${msg.content}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>`
-                    ).join('');
-                })
-                .catch(error => {
-                    console.error('Erreur lors du chargement des données :', error);
-                    document.getElementById("ticket-content").innerText = "Erreur lors du chargement des données : " + error.message;
-                });
-        } else {
-            document.getElementById("ticket-content").innerText = "Aucun ticket spécifié.";
-        }
-    });
-</script>
+                            </div>`
+                        ).join('');
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors du chargement des données :', error);
+                        document.getElementById("ticket-content").innerText = "Erreur lors du chargement des données : " + error.message;
+                    });
+            } else {
+                document.getElementById("ticket-content").innerText = "Aucun ticket spécifié.";
+            }
+        });
+    </script>
 </body>
 </html>
