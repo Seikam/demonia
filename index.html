@@ -75,7 +75,7 @@
             
             if (ticketId) {
                 // Modifié pour utiliser l'URL GitHub raw
-                const baseUrl = 'https://raw.githubusercontent.com/VOTRE_USERNAME/discord-ticket-logs/main/transcripts/';
+                const fileUrl = `http://91.173.15.54:3002/index.html?id=${ticketChannel.id}`;
                 fetch(`${baseUrl}${ticketId}.json`)
                     .then(response => response.json())
                     .then(data => {
